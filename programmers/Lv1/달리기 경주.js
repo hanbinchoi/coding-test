@@ -2,24 +2,22 @@
 // 해쉬 자료구조를 이용해서 푼다. (objetct의 key로 접근하는 bigO는 O(1))
 
 function solution(players, callings) {
-  const obj = {};
-  // 1. array의 값을 객체 형태로 바꿈
-  players.map((ele, index) => {
-    obj[ele] = index;
-    return obj;
+  const map = new Map();
+  // 1. array의 값을 해시 형태로 바꿈
+  players.forEach((ele, index) => {
+    map.set(ele, index);
   });
-
   // 2. 순서 바꾸기
   callings.forEach((element) => {
-    let index = obj[element];
+    let index = map.get(element);
     const front = players[index - 1];
 
     // 불린 이름과 그 앞의 이름을 바꿔줌
     [players[index], players[index - 1]] = [players[index - 1], players[index]];
 
-    // 객체에도 순위(인덱스)값 최신화
-    obj[element] = obj[element] - 1;
-    obj[front] = obj[front] + 1;
+    // 해시에도 순위(인덱스)값 최신화
+    map.set(element, index - 1);
+    map.set(front, index);
   });
   return players;
 }
